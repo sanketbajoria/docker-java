@@ -1,5 +1,5 @@
 FROM alpine:3.1
-MAINTAINER Vladimir Krivosheev <develar@gmail.com>
+MAINTAINER Harpreet Singh <hs@hsingh.com>
 
 ENV JAVA_VERSION_MAJOR 8
 ENV JAVA_VERSION_MINOR 45
@@ -37,4 +37,5 @@ ENV JAVA_HOME /jre
 ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV LANG C.UTF-8
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/urandom"]
+CMD ["sh"]
+
