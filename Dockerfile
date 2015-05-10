@@ -1,10 +1,14 @@
 FROM alpine:3.1
 MAINTAINER Harpreet Singh <hs@hsingh.com>
+# Based on https://github.com/develar/docker-java
 
-ENV JAVA_VERSION_MAJOR 8
-ENV JAVA_VERSION_MINOR 45
-ENV JAVA_VERSION_BUILD 14
-ENV JAVA_PACKAGE server-jre
+ENV JAVA_VERSION_MAJOR=8 \
+	  JAVA_VERSION_MINOR=45 \
+    JAVA_VERSION_BUILD=14 \
+    JAVA_PACKAGE=server-jre \
+    JAVA_HOME=/jre \
+    PATH=${PATH}:/jre/bin \
+    LANG=C.UTF-8
 
 RUN apk add --update curl ca-certificates && \
  cd /tmp && \
@@ -32,10 +36,6 @@ RUN apk add --update curl ca-certificates && \
   rm -rf /jre/lib/jfr && \
   rm -rf /jre/lib/oblique-fonts && \
   rm -rf /tmp/* /var/cache/apk/*
-
-ENV JAVA_HOME /jre
-ENV PATH ${PATH}:${JAVA_HOME}/bin
-ENV LANG C.UTF-8
 
 CMD ["sh"]
 
