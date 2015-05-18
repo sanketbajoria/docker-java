@@ -1,41 +1,51 @@
-FROM alpine:3.1
+FROM progrium/busybox
 MAINTAINER Harpreet Singh <hs@hsingh.com>
 # Based on https://github.com/develar/docker-java
 
 ENV JAVA_VERSION_MAJOR=8 \
-	  JAVA_VERSION_MINOR=45 \
+    JAVA_VERSION_MINOR=45 \
     JAVA_VERSION_BUILD=14 \
     JAVA_PACKAGE=server-jre \
     JAVA_HOME=/jre \
     PATH=${PATH}:/jre/bin \
     LANG=C.UTF-8
 
-RUN apk add --update curl ca-certificates && \
+RUN opkg-install curl ca-certificates && \
  cd /tmp && \
- curl -o glibc-2.21-r2.apk "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
- apk add --allow-untrusted glibc-2.21-r2.apk && \
- curl -o glibc-bin-2.21-r2.apk "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
- apk add --allow-untrusted glibc-bin-2.21-r2.apk && \
- /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
  curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie"\
   http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-b${JAVA_VERSION_BUILD}/${JAVA_PACKAGE}-${JAVA_VERSION_MAJOR}u${JAVA_VERSION_MINOR}-linux-x64.tar.gz | gunzip -c - | tar -xf - && \
-  apk del ca-certificates && \
   mv jdk1.${JAVA_VERSION_MAJOR}.0_${JAVA_VERSION_MINOR}/jre /jre && \
-  rm /jre/bin/jjs && \
-  rm /jre/bin/keytool && \
-  rm /jre/bin/orbd && \
-  rm /jre/bin/pack200 && \
-  rm /jre/bin/policytool && \
-  rm /jre/bin/rmid && \
-  rm /jre/bin/rmiregistry && \
-  rm /jre/bin/servertool && \
-  rm /jre/bin/tnameserv && \
-  rm /jre/bin/unpack200 && \
-  rm /jre/lib/ext/nashorn.jar && \
-  rm /jre/lib/jfr.jar && \
-  rm -rf /jre/lib/jfr && \
-  rm -rf /jre/lib/oblique-fonts && \
-  rm -rf /tmp/* /var/cache/apk/*
+  opkg-cl remove ca-certificates && \
+  rm -rf /jre/bin/jjs \
+         /jre/bin/keytool \
+         /jre/bin/orbd \
+         /jre/bin/pack200 \
+         /jre/bin/policytool \
+         /jre/bin/rmid \
+         /jre/bin/rmiregistry \
+         /jre/bin/servertool \
+         /jre/bin/tnameserv \
+         /jre/bin/unpack200 \
+         /jre/bin/javaws \
+         /jre/lib/plugin.jar \
+         /jre/lib/javaws.jar \
+         /jre/lib/desktop \
+         /jre/lib/deploy* \
+         /jre/lib/*javafx* \
+         /jre/lib/*jfx* \
+         /jre/lib/ext/jfxrt.jar \
+         /jre/lib/ext/nashorn.jar \
+         /jre/lib/jfr \
+         /jre/lib/jfr.jar \
+         /jre/lib/amd64/libdecora_sse.so \
+         /jre/lib/amd64/libprism_*.so \
+         /jre/lib/amd64/libfxplugins.so \
+         /jre/lib/amd64/libglass.so \
+         /jre/lib/amd64/libgstreamer-lite.so \
+         /jre/lib/amd64/libjavafx*.so \
+         /jre/lib/amd64/libjfx*.so \
+         /jre/lib/oblique-fonts \
+         /jre/plugin \
+         /tmp/*
 
 CMD ["sh"]
-
