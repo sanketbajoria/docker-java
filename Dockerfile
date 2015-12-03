@@ -46,6 +46,7 @@ RUN opkg-install curl ca-certificates && \
          /jre/lib/amd64/libjfx*.so \
          /jre/lib/oblique-fonts \
          /jre/plugin \
-         /tmp/*
+         /tmp/* && \
+         echo 'networkaddress.cache.ttl = 60' >> /jre/lib/security/java.security
 
 CMD ["sh"]
